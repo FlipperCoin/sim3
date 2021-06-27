@@ -32,7 +32,7 @@
  localparam
     ALUB_IMM = 2'b00,
     ALUB_REG = 2'b01,
-    ALUB_F = 2'b10
+    ALUB_F = 2'b10;
 
  // ALU operations
  localparam

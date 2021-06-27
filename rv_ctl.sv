@@ -92,9 +92,8 @@ sm_type current,next;
                 default:next = SW_MEM;
             endcase
         end
-        ADDI_ALU2: begin
+        ADDI_ALU2: 
             next = RTYPE_WB; 
-        end
         LW_MEM:
             next = LW_WB;
         LW_WB:
@@ -147,7 +146,7 @@ sm_type current,next;
             alusel      = ALU_ADD;
         end
         LSW_ADDR: begin
-            immsel      = (opcode_funct3 == (LW || ADDI)) ? IMM_L : IMM_S;
+            immsel      = (opcode_funct3 == LW || opcode_funct3 == ADDI) ? IMM_L : IMM_S;
             asel        = ALUA_REG;
             bsel        = ALUB_IMM;
             alusel      = ALU_ADD;

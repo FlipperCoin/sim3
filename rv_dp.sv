@@ -128,10 +128,10 @@
  always_comb 
  begin 
      case(asel)
-        ALUA_REG:       alu_a = a
-        ALUA_PCC:       alu_a = pcc
-        ALUA_ALUOUT:    alu_a = aluout
-        default:        alu_a = a
+        ALUA_REG:       alu_a = a;
+        ALUA_PCC:       alu_a = pcc;
+        ALUA_ALUOUT:    alu_a = aluout;
+        default:        alu_a = a;
      endcase
      
  end
@@ -141,10 +141,10 @@
  always_comb 
  begin
      case(bsel)
-        ALUB_IMM:   alu_b = b
-        ALUB_REG:   alu_b = imm
-        ALUB_F:     alu_b = 32'hFFFFFFFF
-        default:    alu_b = b
+        ALUB_REG:   alu_b = b;
+        ALUB_IMM:   alu_b = imm;
+        ALUB_F:     alu_b = 32'hFFFFFFFF;
+        default:    alu_b = b;
      endcase
  end
 
