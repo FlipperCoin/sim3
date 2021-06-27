@@ -48,7 +48,8 @@
     RTYPE_ALU   = 6,
     RTYPE_WB    = 7,
     BEQ_EXEC    = 8,
-    JAL_EXEC    = 9
+    JAL_EXEC    = 9,
+    ADDI_ALU2   = 10
 	} sm_type;
 
 sm_type current,next;
@@ -74,6 +75,7 @@ sm_type current,next;
             casex (opcode_funct3)
                 LW:     next = LSW_ADDR;
                 SW:     next = LSW_ADDR;
+                ADDI:   next = LSW_ADDR;
                 ALU:    next = RTYPE_ALU;
                 BEQ:    next = BEQ_EXEC;
                 JAL:    next = JAL_EXEC;
@@ -85,9 +87,13 @@ sm_type current,next;
             casex (opcode_funct3)
                 LW:     next = LW_MEM;
                 SW:     next = SW_MEM;
+                ADDI:   next = ADDI_ALU2;
                 // This is never reached
                 default:next = SW_MEM;
             endcase
+        end
+        ADDI_ALU2: begin
+            next = RTYPE_WB; 
         end
         LW_MEM:
             next = LW_WB;
@@ -141,7 +147,7 @@ sm_type current,next;
             alusel      = ALU_ADD;
         end
         LSW_ADDR: begin
-            immsel      = (opcode_funct3 == LW) ? IMM_L : IMM_S;
+            immsel      = (opcode_funct3 == (LW || ADDI)) ? IMM_L : IMM_S;
             asel        = ALUA_REG;
             bsel        = ALUB_IMM;
             alusel      = ALU_ADD;
@@ -179,6 +185,11 @@ sm_type current,next;
             pcwrite     = 1'b1;
             regwen      = 1'b1;
             wbsel       = WB_PC;
+        end
+        ADDI_ALU2: begin
+            asel        = ALUA_ALUOUT;
+            bsel        = ALUB_F;
+            alusel      = ALU_XOR;
         end
     endcase
  end

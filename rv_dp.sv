@@ -125,11 +125,28 @@
 
  // ALU input A
  logic [DPWIDTH-1:0] alu_a;
- assign alu_a = (asel == ALUA_REG) ? a : pcc;
-
- // ALU input A
+ always_comb 
+ begin 
+     case(asel)
+        ALUA_REG:       alu_a = a
+        ALUA_PCC:       alu_a = pcc
+        ALUA_ALUOUT:    alu_a = aluout
+        default:        alu_a = a
+     endcase
+     
+ end
+ 
+ // ALU input B
  logic [DPWIDTH-1:0] alu_b;
- assign alu_b = (bsel == ALUB_REG) ? b : imm;
+ always_comb 
+ begin
+     case(bsel)
+        ALUB_IMM:   alu_b = b
+        ALUB_REG:   alu_b = imm
+        ALUB_F:     alu_b = 32'hFFFFFFFF
+        default:    alu_b = b
+     endcase
+ end
 
  // For signed comparison, cast to integer. logic is by default unsigned
  integer alu_as;
